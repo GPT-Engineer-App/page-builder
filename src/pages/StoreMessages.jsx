@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -17,6 +17,29 @@ const messages = [
 ];
 
 const StoreMessages = () => {
+  const [storeStatuses, setStoreStatuses] = useState({});
+
+  useEffect(() => {
+    const fetchStoreStatuses = async () => {
+      const storeNames = [...new Set(messages.map(msg => msg.storeName))];
+      const statuses = {};
+
+      for (const storeName of storeNames) {
+        try {
+          const response = await fetch(`/store/status?name=${storeName}`);
+          const data = await response.json();
+          statuses[storeName] = data.status;
+        } catch (error) {
+          console.error(`Failed to fetch status for ${storeName}:`, error);
+          statuses[storeName] = "Unknown";
+        }
+      }
+
+      setStoreStatuses(statuses);
+    };
+
+    fetchStoreStatuses();
+  }, []);
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Store Messages</h1>
@@ -28,7 +51,7 @@ const StoreMessages = () => {
             <TableHead>Sender</TableHead>
             <TableHead>Message</TableHead>
             <TableHead>Date</TableHead>
-            <TableHead>Store Name</TableHead>
+            <TableHead>Store Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -38,7 +61,7 @@ const StoreMessages = () => {
               <TableCell>{msg.sender}</TableCell>
               <TableCell>{msg.message}</TableCell>
               <TableCell>{msg.date}</TableCell>
-              <TableCell>{msg.storeName}</TableCell>
+              <TableCell>{storeStatuses[msg.storeName] || "Loading..."}</TableCell>
             </TableRow>
           ))}
         </TableBody>

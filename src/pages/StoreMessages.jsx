@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table } from "antd";
 
 const messages = [
   { id: 1, sender: "John Doe", message: "Hello, I have a question about my order.", date: "2023-10-01", storeName: "Store A" },
@@ -40,32 +32,39 @@ const StoreMessages = () => {
 
     fetchStoreStatuses();
   }, []);
+  const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: 'Sender',
+      dataIndex: 'sender',
+      key: 'sender',
+    },
+    {
+      title: 'Message',
+      dataIndex: 'message',
+      key: 'message',
+    },
+    {
+      title: 'Date',
+      dataIndex: 'date',
+      key: 'date',
+    },
+    {
+      title: 'Store Status',
+      dataIndex: 'storeName',
+      key: 'storeName',
+      render: (storeName) => storeStatuses[storeName] || "Loading...",
+    },
+  ];
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Store Messages</h1>
-      <Table>
-        <TableCaption>Messages from customers</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>ID</TableHead>
-            <TableHead>Sender</TableHead>
-            <TableHead>Message</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead>Store Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {messages.map((msg) => (
-            <TableRow key={msg.id}>
-              <TableCell>{msg.id}</TableCell>
-              <TableCell>{msg.sender}</TableCell>
-              <TableCell>{msg.message}</TableCell>
-              <TableCell>{msg.date}</TableCell>
-              <TableCell>{storeStatuses[msg.storeName] || "Loading..."}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Table dataSource={messages} columns={columns} rowKey="id" />
     </div>
   );
 };

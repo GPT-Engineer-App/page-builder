@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/table";
 
 const messages = [
-  { id: 1, sender: "John Doe", message: "Hello, I have a question about my order.", date: "2023-10-01" },
-  { id: 2, sender: "Jane Smith", message: "Can you help me with a return?", date: "2023-10-02" },
-  { id: 3, sender: "Alice Johnson", message: "I received the wrong item.", date: "2023-10-03" },
+  { id: 1, sender: "John Doe", message: "Hello, I have a question about my order.", date: "2023-10-01", storeName: "Store A" },
+  { id: 2, sender: "Jane Smith", message: "Can you help me with a return?", date: "2023-10-02", storeName: "Store B" },
+  { id: 3, sender: "Alice Johnson", message: "I received the wrong item.", date: "2023-10-03", storeName: "Store C" },
   // Add more messages as needed
 ];
 
@@ -28,6 +28,7 @@ const StoreMessages = () => {
             <TableHead>Sender</TableHead>
             <TableHead>Message</TableHead>
             <TableHead>Date</TableHead>
+            <TableHead>Store Name</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -37,6 +38,7 @@ const StoreMessages = () => {
               <TableCell>{msg.sender}</TableCell>
               <TableCell>{msg.message}</TableCell>
               <TableCell>{msg.date}</TableCell>
+              <TableCell>{msg.storeName}</TableCell>
             </TableRow>
           ))}
         </TableBody>
